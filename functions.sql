@@ -1,4 +1,4 @@
-CREATE OR REPLACE FUNCTION initdb() RETURNS VOID AS $func$
+CREATE OR REPLACE FUNCTION hv_init() RETURNS VOID AS $func$
 DECLARE
   first int := 1;
   last int := 8;
@@ -6,7 +6,7 @@ DECLARE
   schema_name varchar;
   search_path varchar = 'public';
 BEGIN
-  EXECUTE 'CREATE EXTENSION hstore';
+  --EXECUTE 'CREATE EXTENSION hstore';
   FOR i IN first..last LOOP
     schema_name := schema_name_prefix || lpad(i::varchar, 4, '0');
     search_path := search_path || ',' || schema_name;
