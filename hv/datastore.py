@@ -8,7 +8,7 @@ from psycopg2.extras import DictConnection, \
   LoggingConnection, register_hstore as _register_hstore
 from Queue import LifoQueue, Empty, Full
 from hv.util import memoize
-
+from hv.entity import Key
 
 class DatastoreError(Exception):
   pass
@@ -148,20 +148,17 @@ class Datastore(object):
       cursor.close()
       self.put_connection(connection)
 
-  def putx(self, entity):
-    if not isinstance(entity, Entity):
-      raise DatastoreError('entity must be of type Entity')
-    self.put_raw(entity.shard_id, entity.kind)
-
   def put(self, shard_id, kind, **kwargs):
-    result = None
+    key = None
     with self.cursor(shard_id) as cursor:
       q = 'INSERT INTO shard%04d.entities (type, body) ' % shard_id
       cursor.execute(q + 'VALUES (%s, %s) RETURNING id', (kind, kwargs))
-      result = cursor.fetchone()[0]
-    return result
+      key = cursor.fetchone()[0]
+    return Key(key)
 
   def get(self, key):
+    if not isinstance(key, Key):
+      raise DatastoreError('key must be of type Key')
     result = None
     with self.cursor(key.shard_id) as cursor:
       q = 'select * from shard%04d.entities' % key.shard_id
