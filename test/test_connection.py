@@ -1,21 +1,11 @@
+
 import threading
 import unittest
 from hv.datastore import Datastore, ConnectionPool, \
   ConnectionError
+from config import conf
 
-conf = dict(
-  db_conns = [
-    dict(shards='1-9', host='', port='5432',
-      user='xxx', password='xxx', database='hvtest'),
-    dict(shards='9-17', host='192.168.2.24', port='5432',
-      user='xxx', password='xxx', database='hvtest')
-  ],
-  db_num_shards = 20,
-  db_pool_max = 10,
-  db_pool_block_timeout = 2
-)
-
-class DatastoreTest(unittest.TestCase):
+class ConnectionTest(unittest.TestCase):
   def setUp(self):
     self.db = Datastore(conf['db_conns'],
       conf['db_num_shards'], conf['db_pool_max'],
