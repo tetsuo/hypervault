@@ -9,7 +9,7 @@ from config import conf
 class OperationTest(unittest.TestCase):
   def setUp(self):
     self.db = Datastore(conf['db_conns'],
-      conf['db_num_shards'], conf['db_pool_max'],
+      conf['db_pool_max'],
       conf['db_pool_block_timeout'])
 
   def tearDown(self):

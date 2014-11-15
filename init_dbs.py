@@ -1,13 +1,9 @@
 
 # You will most probably need to tweak these a bit according to your specs:
-dbs = [
-  dict(shards='1-9', host='', port='5432', user='x', password='x', database='hvtest'),
-  dict(shards='9-17', host='192.168.2.24', port='5432', user='x', password='x', database='hvtest')
+conns = [
+  dict(shards='1-9', host='', port='5432', user='onur', password='z', database='hvtest'),
+  dict(shards='9-17', host='192.168.2.24', port='5432', user='onur', password='z', database='hvtest')
 ]
-num_shards = 20
-pool_max = 10
-pool_block_timeout = 2
-logger = None
 init_fn_sql = \
     """
     CREATE OR REPLACE FUNCTION hv_init() RETURNS VOID AS $func$
@@ -32,11 +28,11 @@ init_fn_sql = \
     """
 
 from hv.datastore import Datastore
-db = Datastore(dbs, num_shards, pool_max, pool_block_timeout, logger)
+db = Datastore(conns)
 
 for i, pool in enumerate(db._pools):
   first, last = \
-    (int(m) for m in dbs[i].get('shards').split('-'))
+    (int(m) for m in conns[i].get('shards').split('-'))
   conn = pool.get_connection()
   cur = conn.cursor();
   cur.execute(init_fn_sql, (first, last-1))

@@ -10,6 +10,7 @@ from Queue import LifoQueue, Empty, Full
 from hv.util import memoize
 from hv.entity import Key
 
+
 class DatastoreError(Exception):
   pass
 
@@ -67,19 +68,17 @@ class Datastore(object):
            user='kullanici', password='parola', database='mydb'), 
       ...]
 
-  ``num_shards``
-    Toplam sanal shard sayısı.
-
   ``pool_max``
     Her bağlantı için havuzda açık tutulacak bağlantı sayısı.
+
+  ``pool_block_timeout``
+    Havuzdan bu kadar saniye içinde bağlantı alınamazsa request iptal edilir.
 
   ``logger``
     Tanımlandığı durumda log mesajları bu loggera yazdırılır.
   """
 
-  def __init__(self, connections, num_shards,
-         pool_max=10, pool_block_timeout=5, 
-         logger=None):
+  def __init__(self, connections, pool_max=10, pool_block_timeout=5, logger=None):
     if logger:
       # logger tanımlıysa bağlantıları LoggingConnection
       # classından oluşturuyoruz.
