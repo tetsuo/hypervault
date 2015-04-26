@@ -1,4 +1,3 @@
-
 def memoize(f):
     class memodict(dict):
         def __getitem__(self, *key):

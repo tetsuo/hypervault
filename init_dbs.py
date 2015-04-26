@@ -1,4 +1,3 @@
-
 # You will most probably need to tweak these a bit according to your specs:
 conns = [
   dict(shards='1-9', host='', port='5432', user='onur', password='z', database='hvtest'),

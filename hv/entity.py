@@ -1,4 +1,3 @@
-
 _KEY_EPOCH = 1379365531352
 
 from datetime import datetime
